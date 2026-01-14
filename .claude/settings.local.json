@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(python -m src.tools.base:*)",
+      "Bash(python -m src.tools.calculator:*)",
+      "Bash(python -m src.agent.simple_agent:*)",
+      "Bash(python -m src.agent.orchestrator:*)",
+      "Bash(gh auth status:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
