@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **当前进度**:
 - [x] 阶段1-2: 基础 Agent 实现（Tool Use + ReAct 循环）
-- [ ] 阶段3: RAG 集成（文档摄取、向量存储、检索）
+- [~] 阶段3: RAG 集成（进行中，已完成 Step 3.1-3.4）
 - [ ] 阶段4: 完善功能（CLI、答案生成、测试）
 
 ## Development Commands
@@ -91,5 +91,15 @@ _记录开发过程中的关键点和决策_
 - 使用 mock 数据演示多轮工具调用
 
 ### 当前进度: 阶段 3 - RAG 集成
-- 正在进行 Step 3.1: Embedding 基础实验
+- ✅ Step 3.1: Embedding 基础 - 完成
+- ✅ Step 3.2: PDF 文档加载 - 完成
+- ✅ Step 3.3: 文档切分 Chunking - 完成
+- ✅ Step 3.4: 向量数据库入门 - 完成
+- 🚧 Step 3.5: 完整摄取流程 - 进行中
 - 详细进度见 `docs/DEVELOPMENT_ROADMAP.md`
+
+### 已创建的模块
+- `src/index/embedder.py` - Embedding 生成器
+- `src/ingestion/loader.py` - 文档加载器
+- `src/ingestion/chunker.py` - 文档切分器
+- `src/index/vector_store.py` - 向量存储封装
