@@ -60,57 +60,59 @@
 ```
 Analysis-Agent/
 ├── README.md                    # 项目说明 (本文件)
+├── CLAUDE.md                    # Claude Code 项目指南
 ├── requirements.txt             # Python 依赖
 ├── .env.example                 # 环境变量示例
-├── main.py                      # 主入口
 │
 ├── docs/                        # 文档
 │   ├── LEARNING_PATH.md         # ★学习路径 (从这里开始)
 │   ├── QUIZ.md                  # ★自测题 (检验理解)
-│   ├── ARCHITECTURE.md          # 架构详解
-│   └── INTERVIEW_QA.md          # 面试问答
+│   └── DEVELOPMENT_ROADMAP.md   # 开发路线图
+│
+├── experiments/                 # 实验脚本 (按步骤学习)
+│   ├── 01_embedding_basics.py   # Embedding 基础
+│   ├── 02_pdf_loading.py        # PDF 加载
+│   ├── 03_chunking.py           # 文档切分
+│   ├── 04_vector_store.py       # 向量存储
+│   ├── 05_full_ingestion.py     # 完整摄取流程
+│   └── 06_rag_agent.py          # RAG Agent 完整演示
 │
 ├── src/
 │   ├── interface/               # A层: 接口层
-│   │   ├── cli.py               # 命令行界面
+│   │   ├── cli.py               # 命令行界面 (REPL)
 │   │   └── session.py           # 会话管理
 │   │
 │   ├── ingestion/               # B层: 文档摄取层
-│   │   ├── loader.py            # 文件加载
-│   │   ├── extractor.py         # 文本抽取
+│   │   ├── loader.py            # PDF/TXT 文件加载
 │   │   └── chunker.py           # 文档切分
 │   │
 │   ├── index/                   # C层: 知识索引层
-│   │   ├── embedder.py          # Embedding生成
-│   │   ├── vector_store.py      # 向量数据库
-│   │   └── retriever.py         # 检索策略
+│   │   ├── embedder.py          # Embedding 生成
+│   │   └── vector_store.py      # 向量数据库 (ChromaDB)
 │   │
 │   ├── agent/                   # D层: Agent决策层 ★核心
 │   │   ├── simple_agent.py      # 最简Agent (入门)
-│   │   ├── orchestrator.py      # 完整Agent循环
-│   │   ├── router.py            # 意图路由
-│   │   └── planner.py           # 计划生成
+│   │   └── orchestrator.py      # 完整Agent (ReAct循环)
 │   │
 │   ├── tools/                   # E层: 工具层
-│   │   ├── base.py              # 工具基类
-│   │   ├── retrieval.py         # 检索工具
-│   │   ├── table_extract.py     # 表格抽取
-│   │   ├── calculator.py        # 财务计算
-│   │   └── citation.py          # 引用管理
+│   │   ├── base.py              # 工具基类 + 注册表
+│   │   ├── calculator.py        # 数学计算工具
+│   │   └── retrieval.py         # 语义检索工具
 │   │
 │   └── synthesis/               # F层: 生成层
-│       ├── evidence.py          # 证据汇总
-│       └── answer.py            # 答案生成
+│       └── answer.py            # 答案格式化 + 引用
 │
 ├── prompts/                     # Prompt 模板
-│   ├── system.txt               # 系统提示词
-│   └── planning.txt             # 规划提示词
+│   └── AAPL_method.txt          # 苹果财报分析方法
 │
 ├── data/                        # 测试数据
 │   └── sample_report.txt        # 示例财报
 │
-└── tests/                       # 测试
-    └── test_agent.py
+└── tests/                       # 测试 (55个测试用例)
+    ├── test_tools.py            # 工具层测试
+    ├── test_ingestion.py        # 摄取层测试
+    ├── test_index.py            # 索引层测试
+    └── test_agent.py            # Agent层测试
 ```
 
 ## 快速开始
@@ -123,9 +125,33 @@ pip install -r requirements.txt
 cp .env.example .env
 # 编辑 .env，填入你的 OpenAI API Key
 
-# 3. 运行
-python main.py
+# 3. 运行 CLI（交互式问答）
+python -m src.interface.cli
+
+# 4. 运行实验脚本（学习用）
+python experiments/06_rag_agent.py
+
+# 5. 运行测试
+pytest tests/ -v                    # 运行所有测试
+pytest tests/test_tools.py -v       # 仅测试工具层
+SKIP_API_TESTS=1 pytest tests/ -v   # 跳过需要 API 的测试
 ```
+
+### CLI 命令
+
+在 CLI 中可以使用以下命令：
+
+| 命令 | 说明 |
+|------|------|
+| `/help` | 显示帮助信息 |
+| `/load <文件路径>` | 加载 PDF/TXT 文档 |
+| `/docs` | 显示已加载的文档 |
+| `/save [名称]` | 保存当前会话 |
+| `/list` | 列出所有保存的会话 |
+| `/restore <名称>` | 恢复会话 |
+| `/history` | 显示对话历史 |
+| `/clear` | 清空对话历史 |
+| `/exit` | 退出程序 |
 
 ## 学习指南
 

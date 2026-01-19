@@ -164,7 +164,9 @@ class RetrievalTool(Tool):
             if source:
                 output_parts.append(f"    文件: {source}")
             output_parts.append(f"    相似度: {score:.2f}")
-            output_parts.append(f"    内容: {result.text[:500]}...")  # 限制长度
+            # 清理文本中的无效 Unicode 字符
+            clean_text = result.text[:500].encode('utf-8', errors='ignore').decode('utf-8')
+            output_parts.append(f"    内容: {clean_text}...")
             output_parts.append("")
         
         return "\n".join(output_parts)

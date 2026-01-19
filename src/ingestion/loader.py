@@ -166,6 +166,9 @@ class DocumentLoader:
             page = doc[page_num]
             text = page.get_text()
 
+            # 清理无效 Unicode 字符（surrogate characters）
+            text = text.encode('utf-8', errors='ignore').decode('utf-8')
+
             pages.append(Page(
                 page_num=page_num + 1,  # 1-indexed
                 text=text,

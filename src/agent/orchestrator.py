@@ -130,10 +130,17 @@ class AgentOrchestrator:
 3. **基于证据**：回答必须基于工具返回的数据，不要编造数字
 4. **承认不足**：如果找不到数据，诚实告诉用户，不要猜测
 
+## 引用规则（重要！）
+当你使用搜索工具获取信息后，在回答中必须标注来源：
+- 使用 [1], [2], [3] 等标记引用对应的搜索结果
+- 例如："苹果公司2025财年总净销售额为416,161百万美元 [1]"
+- 每个数据点都应标注来源，便于用户核实
+
 ## 输出格式
 - 回答要简洁清晰
 - 涉及数字要给出计算过程
 - 重要结论用数据支撑
+- 使用 [n] 标注数据来源
 """
 
     def register_tool(self, tool: Tool) -> None:
@@ -169,9 +176,10 @@ class AgentOrchestrator:
         返回：
             Agent 的最终回答
         """
-        print("\n" + "=" * 70)
-        print(f"[QUESTION] {user_question}")
-        print("=" * 70)
+        if self.verbose:
+            print("\n" + "=" * 70)
+            print(f"[QUESTION] {user_question}")
+            print("=" * 70)
 
         # ========== 初始化对话历史 ==========
         messages = [
@@ -184,9 +192,10 @@ class AgentOrchestrator:
 
         # ========== ReAct 循环 ==========
         for iteration in range(1, self.max_iterations + 1):
-            print(f"\n{'-' * 70}")
-            print(f"[ITERATION {iteration}]")
-            print(f"{'-' * 70}")
+            if self.verbose:
+                print(f"\n{'-' * 70}")
+                print(f"[ITERATION {iteration}]")
+                print(f"{'-' * 70}")
 
             # ----- 步骤1: 调用 LLM -----
             self._log("调用 LLM 思考下一步...", "THINK")
@@ -234,12 +243,13 @@ class AgentOrchestrator:
                 final_answer = assistant_message.content
                 self._log("LLM 生成最终答案", "DONE")
 
-                print(f"\n{'=' * 70}")
-                print(f"[FINAL ANSWER]")
-                print(f"{'=' * 70}")
-                print(final_answer)
-                print(f"{'=' * 70}")
-                print(f"[STATS] Total iterations: {iteration}")
+                if self.verbose:
+                    print(f"\n{'=' * 70}")
+                    print(f"[FINAL ANSWER]")
+                    print(f"{'=' * 70}")
+                    print(final_answer)
+                    print(f"{'=' * 70}")
+                    print(f"[STATS] Total iterations: {iteration}")
 
                 return final_answer
 
