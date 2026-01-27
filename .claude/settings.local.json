@@ -8,7 +8,12 @@
       "Bash(python -m src.agent.orchestrator:*)",
       "Bash(gh auth status:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(gh repo create:*)",
+      "Bash(git pull:*)",
+      "Bash(.venv/Scripts/python:*)",
+      "Bash(git push:*)"
     ]
   }
 }
